@@ -6,6 +6,18 @@ from pygame.locals import *
 SIZE = 40
 
 
+class Apple:
+    def __init__(self, parent_screen):
+        self.parent_screen = parent_screen
+        self.apple = pygame.image.load("resources/apple.jpg").convert()
+        self.x = SIZE * 3
+        self.y = SIZE * 3
+
+    def draw(self):
+        self.parent_screen.blit(self.apple, (self.x, self.y))
+        pygame.display.flip()
+
+
 class Snake:
     def __init__(self, parent_screen, length):
         self.parent_screen = parent_screen
@@ -16,7 +28,7 @@ class Snake:
         self.snake_direction = "right"
 
     def draw(self):
-        self.parent_screen.fill((92, 25, 84))
+        self.parent_screen.fill((110, 110, 5))
         for i in range(self.length):
             self.parent_screen.blit(self.block, (self.x[i], self.y[i]))
         pygame.display.flip()
@@ -50,9 +62,6 @@ class Snake:
         if self.snake_direction == "right":
             self.x[0] += SIZE
 
-
-
-
         self.draw()
 
 
@@ -60,9 +69,15 @@ class Game:
     def __init__(self):
         pygame.init()
         self.surface = pygame.display.set_mode((1000, 800))
-        self.surface.fill((92, 25, 84))
-        self.snake = Snake(parent_screen=self.surface, length=2)
+        self.surface.fill((110, 110, 5))
+        self.snake = Snake(parent_screen=self.surface, length=6)
         self.snake.draw()
+        self.apple = Apple(parent_screen=self.surface)
+        self.apple.draw()
+
+    def play(self):
+        self.snake.walk()
+        self.apple.draw()
 
     def run(self):
         running = True
@@ -88,7 +103,7 @@ class Game:
                 elif event.type == QUIT:
                     running = False
 
-            self.snake.walk()
+            self.play()
             time.sleep(0.2)
 
 
