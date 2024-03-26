@@ -51,8 +51,12 @@ class Snake:
     def move_right(self):
         self.snake_direction = "right"
 
-    def walk(self):
+    def add_block(self):
+        self.length += 1
+        self.x.append(-1)
+        self.y.append(-1)
 
+    def walk(self):
         # Let the blocks excluding the first block take the previous position
         for i in range(self.length - 1, 0, -1):
             self.x[i] = self.x[i - 1]
@@ -76,7 +80,7 @@ class Game:
         pygame.init()
         self.surface = pygame.display.set_mode((1000, 800))
         self.surface.fill((110, 110, 5))
-        self.snake = Snake(parent_screen=self.surface, length=6)
+        self.snake = Snake(parent_screen=self.surface, length=1)
         self.snake.draw()
         self.apple = Apple(parent_screen=self.surface)
         self.apple.draw()
@@ -93,6 +97,7 @@ class Game:
         self.apple.draw()
 
         if self.is_collision(self.apple.x, self.apple.y, self.snake.x[0], self.snake.y[0]):
+            self.snake.add_block()
             self.apple.move()
 
     def run(self):
